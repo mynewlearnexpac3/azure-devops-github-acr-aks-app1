@@ -47,4 +47,7 @@ stages:
         sudo docker image ls -a
         sudo docker tag app1-nginx $(containerRegistry)/$(imageRepository):$(tag)
         sudo docker image ls -a
+        sudo docker login $(containerRegistry)
+        
+
 
