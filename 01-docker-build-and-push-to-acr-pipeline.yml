@@ -15,7 +15,10 @@ variables:
   containerRegistry: 'azaksdevopsacr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
-  dockerUserName: '00000000-0000-0000-0000-000000000000'
+  #dockerUserName: '00000000-0000-0000-0000-000000000000'
+  acrUserName: 'azaksdevopsacr'
+  acrPassword: 'sdboZu8gW2C/YRkqnDLKLM0BQonhrvgAek5HcgGzkN+ACRA4iapf'
+  
 
   # Agent VM image name
 pool:
@@ -48,7 +51,7 @@ stages:
         sudo docker image ls -a
         sudo docker tag app1-nginx $(containerRegistry)/$(imageRepository):$(tag)
         sudo docker image ls -a
-        sudo docker login $(containerRegistry) -u $(dockerUserName) -p $(dockerRegistryServiceConnection)
+        sudo docker login $(containerRegistry) -u $(acrUserName) -p $(acrPassword)
 
 
 
