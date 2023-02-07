@@ -42,7 +42,7 @@ stages:
     - script: |
         sudo systemctl start docker
         sudo service docker status
-        sudo docker image rm 
+        sudo docker rmi -f $(sudo docker images -aq)
         sudo docker build --rm -f Dockerfile -t app1-nginx $(Build.SourcesDirectory)
         sudo docker image ls -a
         sudo docker tag app1-nginx $(containerRegistry)/$(imageRepository):$(tag)
