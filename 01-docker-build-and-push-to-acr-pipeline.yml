@@ -29,12 +29,19 @@ stages:
     pool:
       name: default
     steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+    # - task: Docker@2
+    #   displayName: Build and push an image to container registry
+    #   inputs:
+    #     command: buildAndPush
+    #     repository: $(imageRepository)
+    #     dockerfile: $(dockerfilePath)
+    #     containerRegistry: $(dockerRegistryServiceConnection)
+    #     tags: |
+    #       $(tag)
+        
+    - script: |
+        sudo systemctl start docker
+        sudo service docker status
+        sudo docker build --rm -f Dockerfile -t app1-nginx $(Build.SourcesDirectory)
+        sudo docker image ls -a
+
