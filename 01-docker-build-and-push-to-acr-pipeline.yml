@@ -18,7 +18,9 @@ variables:
 
   # Agent VM image name
   pool:
-    agent: default
+    name: default
+    demands: 
+      - agent.name -equals ubuntuvm
 
 stages:
 - stage: Build
