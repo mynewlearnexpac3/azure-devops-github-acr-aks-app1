@@ -52,6 +52,7 @@ stages:
         sudo docker tag app1-nginx $(containerRegistry)/$(imageRepository):$(tag)
         sudo docker image ls -a
         sudo docker login $(containerRegistry) -u $(acrUserName) -p $(acrPassword)
+        sudo docker push $(containerRegistry)/$(imageRepository):$(tag)
 
 
 
