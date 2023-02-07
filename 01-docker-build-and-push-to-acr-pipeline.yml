@@ -45,6 +45,6 @@ stages:
         sudo docker image rm 
         sudo docker build --rm -f Dockerfile -t app1-nginx $(Build.SourcesDirectory)
         sudo docker image ls -a
-        sudo docker tag app1-nginx $(containerRegistry)/$(imageRepository):latest
+        sudo docker tag app1-nginx $(containerRegistry)/$(imageRepository):$(tag)
         sudo docker image ls -a
 
