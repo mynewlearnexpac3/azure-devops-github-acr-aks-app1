@@ -44,4 +44,6 @@ stages:
         sudo service docker status
         sudo docker build --rm -f Dockerfile -t app1-nginx $(Build.SourcesDirectory)
         sudo docker image ls -a
+        sudo docker tag app1-nginx $(containerRegistry)/$(Build.Repository.Name):latest
+        sudo docker image ls -a
 
