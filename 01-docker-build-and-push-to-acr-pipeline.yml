@@ -17,10 +17,9 @@ variables:
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
-  pool:
-    name: default
-    demands: 
-      - agent.name -equals ubuntuvm
+pool:
+  name: Default
+  demands: agent.name -equals ubuntuvm # exists check for SpecialSoftware
 
 stages:
 - stage: Build
