@@ -11,16 +11,15 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '7393a628-2eb3-49be-9c09-6bfd4d506015'
-  imageRepository: 'app1nginx'
+  imageRepository: 'app1/app1nginx'
   containerRegistry: 'azaksdevopsacr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
-  #dockerUserName: '00000000-0000-0000-0000-000000000000'
   acrUserName: 'azaksdevopsacr'
   acrPassword: 'sdboZu8gW2C/YRkqnDLKLM0BQonhrvgAek5HcgGzkN+ACRA4iapf'
   
 
-  # Agent VM image name
+# Agent VM image name
 pool:
   name: default
 
