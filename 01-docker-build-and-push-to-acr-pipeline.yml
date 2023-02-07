@@ -18,8 +18,7 @@ variables:
 
   # Agent VM image name
 pool:
-  name: Default
-  demands: agent.name -equals ubuntuvm # exists check for SpecialSoftware
+  name: default
 
 stages:
 - stage: Build
