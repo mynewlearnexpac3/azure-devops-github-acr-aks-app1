@@ -11,6 +11,11 @@ trigger:
 # Variables
 variables:
   tag: '$(Build.BuildId)'
+  imageRepository: 'custom2aksnginxapp1'
+  containerRegistry: 'aksacrdemo2.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  acrUserName: 'aksacrdemo2'
+  acrPassword: 'aJICWPsxqKK9OeKgM/b/FNqK4b/OXL14GtW8kUcGBU+ACRD83kGV'
 
 stages:
 # Build Stage 
@@ -21,17 +26,50 @@ stages:
     displayName: Build Job
     pool:
       name: default
-    steps:
-      # Task-1: Build Docker Image and push to Azure Container Registry ACR
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'aksacrdemo2'
-          repository: 'custom2aksnginxapp1'
-          command: 'buildAndPush'
-          Dockerfile: '**/Dockerfile'
-          tags: |
-            $(tag)
-            $(Build.SourceVersion)
-      # Task-2: Copy kube-manifest files to Build Artifact Directory
-      # Task-3: Publish build articats to Azure Pipelines
 
+      # Task-1: Build Docker Image and push to Azure Container Registry ACR
+    steps:
+    - script: |
+        sudo systemctl start docker
+        sudo service docker status
+        sudo docker rmi -f $(sudo docker images -aq)
+        sudo docker build --rm -f Dockerfile -t app1-nginx $(Build.SourcesDirectory)
+        sudo docker image ls -a
+        sudo docker tag app1-nginx $(containerRegistry)/$(imageRepository):$(tag)
+        sudo docker image ls -a
+        sudo docker login $(containerRegistry) -u $(acrUserName) -p $(acrPassword)
+        sudo docker push $(containerRegistry)/$(imageRepository):$(tag)
+
+    # - task: Docker@2
+    #   inputs:
+    #     containerRegistry: 'aksacrdemo2'
+    #     repository: 'custom2aksnginxapp1'
+    #     command: 'buildAndPush'
+    #     Dockerfile: '**/Dockerfile'
+    #     tags: |
+    #       $(tag)
+    #       $(Build.SourceVersion)
+    # Task-2: Copy kube-manifest files to Build Artifact Directory
+    
+
+     ## Publish Artifacts pipeline code in addition to Build and Push          
+    - bash: echo Contents in System Default Working Directory; ls -R $(System.DefaultWorkingDirectory)        
+    - bash: echo Before copying Contents in Build Artifact Directory; ls -R $(Build.ArtifactStagingDirectory)        
+    # Task-2: Copy files (Copy files from a source folder to target folder)
+    # Source Directory: $(System.DefaultWorkingDirectory)/kube-manifests
+    # Target Directory: $(Build.ArtifactStagingDirectory)
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)/kube-manifests'
+        Contents: '**'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        OverWrite: true
+    # List files from Build Artifact Staging Directory - After Copy
+    - bash: echo After copying to Build Artifact Directory; ls -R $(Build.ArtifactStagingDirectory) 
+    
+    # Task-3: Publish build articats to Azure Pipelines           
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'kube-manifests'
+        publishLocation: 'Container'
