@@ -1,0 +1,53 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '684af22c-29ea-4599-9df8-c38cf010ba38'
+  imageRepository: 'custom1aksnginxapp1'
+  containerRegistry: 'aksacrdemo2.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+  acrUserName: 'aksacrdemo2'
+  acrPassword: 'aJICWPsxqKK9OeKgM/b/FNqK4b/OXL14GtW8kUcGBU+ACRD83kGV'
+
+  # Agent VM image name
+pool:
+  name: default
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      name: default
+    steps:
+    # - task: Docker@2
+    #   displayName: Build and push an image to container registry
+    #   inputs:
+    #     command: buildAndPush
+    #     repository: $(imageRepository)
+    #     dockerfile: $(dockerfilePath)
+    #     containerRegistry: $(dockerRegistryServiceConnection)
+    #     tags: |
+    #       $(tag)
+
+    - script: |
+        sudo systemctl start docker
+        sudo service docker status
+        sudo docker rmi -f $(sudo docker images -aq)
+        sudo docker build --rm -f Dockerfile -t app1-nginx $(Build.SourcesDirectory)
+        sudo docker image ls -a
+        sudo docker tag app1-nginx $(containerRegistry)/$(imageRepository):$(tag)
+        sudo docker image ls -a
+        sudo docker login $(containerRegistry) -u $(acrUserName) -p $(acrPassword)
+        sudo docker push $(containerRegistry)/$(imageRepository):$(tag)
