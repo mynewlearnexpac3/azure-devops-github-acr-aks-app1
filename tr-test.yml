@@ -17,7 +17,7 @@ variables:
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'aksacrdemo26200a1b1-auth'
-  isFeatureBranch: $(Build.SourceBranchName)
+  isFeatureBranch: $[startsWith(variables['Build.SourceBranchName'],'sc-')]
 
   # Agent VM image name
   pool:
@@ -27,7 +27,7 @@ variables:
 stages:
 - stage: Print
   displayName: Printing Predefined Variables
-  condition: $[startsWith($(isFeatureBranch), 'sc-')]
+  condition: $[eq(variables.isFeatureBranch, 'True')]
   jobs:
   - job: PrintingVariables
   
