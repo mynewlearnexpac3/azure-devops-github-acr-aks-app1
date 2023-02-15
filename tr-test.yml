@@ -27,7 +27,7 @@ stages:
 - stage: Printing Predefined Variables
   displayName: Printing Predefined Variables
   jobs:
-  - job: Printing Variables
+  - job: PrintingVariables
     displayName: Print Variables
     pool:
       name: default
