@@ -27,7 +27,7 @@ variables:
 stages:
 - stage: Print
   displayName: Printing Predefined Variables
-  condition: and(succeeded(), eq(variables.isFeatureBranch, 'True'))
+  condition: and(succeeded(), eq(variables.isFeatureBranch, 'true'))
   jobs:
   - job: PrintingVariables
   
