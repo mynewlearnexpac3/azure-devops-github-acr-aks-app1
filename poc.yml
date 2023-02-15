@@ -1,0 +1,75 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'a0cf4ccb-9322-4d71-8603-8da776369181'
+  imageRepository: 'app1nginxaks'
+  containerRegistry: 'aksacrdemo2.azurecr.io'
+  dockerfilePath: '**/Dockerfile'
+  tag: '$(Build.BuildId)'
+  imagePullSecret: 'aksacrdemo26200a1b1-auth'
+  isFeatureBranch: $[startsWith(variables['Build.SourceBranchName'],'sc-')]
+
+  # Agent VM image name
+  pool:
+  name: default
+
+
+stages:
+- stage: Print1
+  displayName: Printing Predefined Variables
+  condition: and(succeeded(), eq(variables.isFeatureBranch, 'True'))
+  jobs:
+  - job: PrintingVariables
+  
+    displayName: Print Variables
+    pool:
+      name: default
+    steps:
+    - script: |
+        echo "Build_SourceBranch:" + ":" + $(Build.SourceBranch)
+        echo "Build.SourceBranchName:" + ":" + $(Build.SourceBranchName)
+
+- stage: Print2
+  displayName: Printing Stage2
+  dependsOn: Print1
+  jobs:
+  - job: EchoVariables
+  
+    displayName: Echo Variables
+    pool:
+      name: default
+    steps:
+    - script: |
+        echo "This is Stage Print2"
+
+# - stage: Build
+#   displayName: Build stage
+#   jobs:
+#   - job: Build
+#     displayName: Build
+#     pool:
+#       name: default
+#     steps:
+#     - task: Docker@2
+#       displayName: Build and push an image to container registry
+#       inputs:
+#         command: buildAndPush
+#         repository: $(imageRepository)
+#         dockerfile: $(dockerfilePath)
+#         containerRegistry: $(dockerRegistryServiceConnection)
+#         tags: |
+#           $(tag)
+
+#     - upload: manifests
+#       artifact: manifests
