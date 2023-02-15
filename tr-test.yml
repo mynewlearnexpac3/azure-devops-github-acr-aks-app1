@@ -5,9 +5,7 @@
 trigger: none
 
 pr: 
-  branches:
-    include:
-      - master
+  - master
 
 resources:
 - repo: self
