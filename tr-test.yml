@@ -3,7 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 pr:
-- sc-temp
+- master
 
 resources:
 - repo: self
@@ -17,7 +17,7 @@ variables:
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'aksacrdemo26200a1b1-auth'
-  isFeatureBranch: $[startsWith(variables['Build.SourceBranchName'],'heman')]
+  isFeatureBranch: $[startsWith(variables['Build.SourceBranchName'],'sc-')]
 
   # Agent VM image name
   pool:
