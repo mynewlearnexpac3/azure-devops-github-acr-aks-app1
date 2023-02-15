@@ -17,7 +17,7 @@ variables:
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'aksacrdemo26200a1b1-auth'
-  isFeatureBranch: $[startsWith(variables['Build.SourceBranchName'],'sc-')]
+  isFeatureBranch: $[startsWith(variables['Build.SourceBranchName'],'heman')]
 
   # Agent VM image name
   pool:
