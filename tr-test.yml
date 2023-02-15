@@ -5,8 +5,10 @@
 pr: 
   branches:
     include:
+      - '*'
+    exclude:
       - master
-      
+
 resources:
 - repo: self
 
