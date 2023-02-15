@@ -1,8 +1,9 @@
-# Deploy to Azure Kubernetes Service
-# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
 
-pr:
+trigger:
 - master
 
 resources:
@@ -72,37 +73,3 @@ stages:
 
 #     - upload: manifests
 #       artifact: manifests
-
-# - stage: Deploy
-#   displayName: Deploy stage
-#   dependsOn: Build
-
-#   jobs:
-#   - deployment: Deploy
-#     displayName: Deploy
-#     pool:
-#       name: default
-#     environment: 'mynewlearnexpac3azuredevopsgithubacraksapp1-1360.default'
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: KubernetesManifest@0
-#             displayName: Create imagePullSecret
-#             inputs:
-#               action: createSecret
-#               secretName: $(imagePullSecret)
-#               dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-
-#           - task: KubernetesManifest@0
-#             displayName: Deploy to Kubernetes cluster
-#             inputs:
-#               action: deploy
-#               manifests: |
-#                 $(Pipeline.Workspace)/manifests/deployment.yml
-#                 $(Pipeline.Workspace)/manifests/service.yml
-#               imagePullSecrets: |
-#                 $(imagePullSecret)
-#               containers: |
-#                 $(containerRegistry)/$(imageRepository):$(tag)
-
