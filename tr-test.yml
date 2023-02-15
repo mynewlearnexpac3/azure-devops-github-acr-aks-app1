@@ -25,9 +25,9 @@ variables:
 
 
 stages:
-- stage: Print
+- stage: Print1
   displayName: Printing Predefined Variables
-  condition: and(succeeded(), eq(variables.isFeatureBranch, 'true'))
+  condition: and(succeeded(), eq(variables.isFeatureBranch, 'True'))
   jobs:
   - job: PrintingVariables
   
@@ -38,6 +38,19 @@ stages:
     - script: |
         echo "Build_SourceBranch:" + ":" + $(Build.SourceBranch)
         echo "Build.SourceBranchName:" + ":" + $(Build.SourceBranchName)
+
+- stage: Print2
+  displayName: Printing Stage2
+  dependsOn: Print1
+  jobs:
+  - job: EchoVariables
+  
+    displayName: Echo Variables
+    pool:
+      name: default
+    steps:
+    - script: |
+        echo "This is Stage Print2"
 
 # - stage: Build
 #   displayName: Build stage
