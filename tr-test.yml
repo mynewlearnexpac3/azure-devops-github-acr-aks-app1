@@ -24,10 +24,10 @@ variables:
 
 
 stages:
-- stage: Printing Predefined Variables
+- stage: Print
   displayName: Printing Predefined Variables
   jobs:
-  - job: Printing Variables
+  - job: PrintingVariables
     displayName: Print Variables
     pool:
       name: default
