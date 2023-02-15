@@ -24,7 +24,7 @@ variables:
 
 
 stages:
-- stage: Printing Predefined Variables
+- stage: Print
   displayName: Printing Predefined Variables
   jobs:
   - job: PrintingVariables
