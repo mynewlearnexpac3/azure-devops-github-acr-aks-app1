@@ -2,9 +2,11 @@
 # Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
-pr:
-- master
-
+pr: 
+  branches:
+    include:
+      - master
+      
 resources:
 - repo: self
 
